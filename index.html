@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>English 5 Speaking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{font-family:"Comic Sans MS",Arial;background:#eef5ff;padding:10px}
+.container{max-width:1100px;margin:auto;background:#fff;padding:16px;border-radius:20px;box-shadow:0 10px 25px rgba(0,0,0,.2)}
+h1{text-align:center;color:#1565c0}
+.card{background:#f9fcff;padding:14px;margin-top:14px;border-radius:16px;border:2px dashed #bbdefb}
+input,select,textarea,button{width:100%;padding:10px;border-radius:12px;font-size:15px;margin-top:6px}
+button{background:#1565c0;color:white;border:none}
+.unit-title{background:#ffeb3b;padding:8px;border-radius:14px;text-align:center;font-weight:bold}
+.bad{background:#ffcdd2;padding:6px 10px;border-radius:10px;margin:4px;display:inline-block}
+.good{background:#c8e6c9;padding:6px 10px;border-radius:10px;margin:4px;font-weight:bold;cursor:pointer}
+.certificate{display:none;margin-top:30px;padding:28px;border-radius:18px;border:6px solid #f9a825;text-align:center;background:#fffef6}
+.cert-title{color:#f57c00;font-size:26px;font-weight:bold}
+.cert-name{color:#2e7d32;font-size:26px;font-weight:bold}
+.star{font-size:30px;color:#f9a825}
+.footer{margin-top:12px;font-weight:bold;color:#0d47a1}
+</style>
+</head>
+
+<body>
+<div class="container">
+<h1>🎤 English 5 Speaking</h1>
+
+<div class="card">
+<input id="studentName" placeholder="Student name">
+<input id="studentClass" placeholder="Class (5/1)">
+</div>
+
+<div class="card">
+<select id="mode">
+<option value="unit">Speaking by Unit</option>
+<option value="free">Free Speaking</option>
+</select>
+</div>
+
+<div class="card" id="unitBox">
+<select id="unit"></select>
+<div class="unit-title" id="unitTitle"></div>
+<p><b>👂 Sample (Lesson 1 + Lesson 2)</b></p>
+<p id="sampleText"></p>
+<button onclick="speak(sampleText.innerText)">🔊 Listen sample</button>
+</div>
+
+<div class="card">
+<textarea id="studentText" rows="3" placeholder="Press the microphone and speak..."></textarea>
+<button onclick="startSpeak()">🎙 Start speaking</button>
+</div>
+
+<div class="card">
+<h3>🤖 AI Feedback</h3>
+<div id="feedback"></div>
+</div>
+
+<div class="certificate" id="certificate">
+<div class="cert-title">CERTIFICATE OF ENGLISH SPEAKING</div>
+<p>This certificate is proudly presented to</p>
+<div class="cert-name" id="cName"></div>
+<p id="cClass"></p>
+<p>for successfully completing</p>
+<p><b>✔ <span id="cUnit"></span></b></p>
+<p><b>English Speaking Practice – Grade 5</b></p>
+<div class="star" id="cStar"></div>
+<p id="cDate"></p>
+<p>👏 Keep practising English every day!</p>
+<div class="footer"><b>By Mrs Tran Thi Kim Yen and Mrs Pham Thi Ngoc Bich</b></div>
+</div>
+</div>
+
+<audio id="clap" src="https://www.soundjay.com/human/applause-8.mp3"></audio>
+<audio id="cheer" src="https://www.soundjay.com/human/children-cheering-01.mp3"></audio>
+
+<script>
+function speak(t){
+ let u=new SpeechSynthesisUtterance(t);
+ u.lang="en-GB";u.rate=0.75;
+ speechSynthesis.speak(u);
+}
+
+/* ===== 20 UNITS – SGK CHUẨN (2 LESSON) ===== */
+const units={
+1:{title:"Unit 1: All about me",sample:"I’m Nam. I’m in class 5A. I live in the countryside. My favourite colour is blue. I like playing football."},
+2:{title:"Unit 2: Our homes",sample:"I live in a small house. There is a living room and two bedrooms. I like my home very much."},
+3:{title:"Unit 3: My foreign friends",sample:"I have a foreign friend. He is from Australia. He is friendly and helpful."},
+4:{title:"Unit 4: Our free-time activities",sample:"In my free time, I read books and watch cartoons. I like playing sports."},
+5:{title:"Unit 5: My future job",sample:"I would like to be a teacher because I want to teach children."},
+6:{title:"Unit 6: Our school rooms",sample:"Go upstairs and go past the library. The computer room is on the second floor."},
+7:{title:"Unit 7: Our favourite school activities",sample:"I like doing projects because it is interesting."},
+8:{title:"Unit 8: In our classroom",sample:"The books are on the table. The board is in front of the class."},
+9:{title:"Unit 9: Our outdoor activities",sample:"Yesterday, I played football in the school yard."},
+10:{title:"Unit 10: Our school trip",sample:"Last weekend, I visited Ba Na Hills with my family."},
+11:{title:"Unit 11: Family time",sample:"My family watched a movie together last night."},
+12:{title:"Unit 12: Our Tet holiday",sample:"At Tet, I decorate the house and visit my grandparents."},
+13:{title:"Unit 13: Our special days",sample:"On Children’s Day, we have gifts and fun activities."},
+14:{title:"Unit 14: Staying healthy",sample:"I do morning exercise and eat healthy food."},
+15:{title:"Unit 15: Our health",sample:"I have a headache. I should rest and drink water."},
+16:{title:"Unit 16: Seasons and weather",sample:"In winter, it is cold. I wear a jumper."},
+17:{title:"Unit 17: Stories for children",sample:"The tortoise was slow but it won the race."},
+18:{title:"Unit 18: Means of transport",sample:"I go to school by bike."},
+19:{title:"Unit 19: Places of interest",sample:"Hoi An Old Town is beautiful and peaceful."},
+20:{title:"Unit 20: Our summer holidays",sample:"This summer, I will visit the beach with my family."}
+};
+
+/* LOAD */
+const unitSel=document.getElementById("unit");
+for(let i=1;i<=20;i++)unitSel.innerHTML+=`<option value="${i}">Unit ${i}</option>`;
+unitSel.onchange=loadUnit;loadUnit();
+function loadUnit(){
+ let u=units[unitSel.value];
+ unitTitle.innerText=u.title;
+ sampleText.innerText=u.sample;
+}
+
+/* MODE */
+mode.onchange=()=>unitBox.style.display=mode.value==="free"?"none":"block";
+
+/* SPEECH */
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+const recog=new SpeechRecognition();
+recog.lang="en-GB";
+function startSpeak(){recog.start();}
+recog.onresult=e=>{
+ let said=e.results[0][0].transcript.toLowerCase();
+ studentText.value=said;
+ analyze(said);
+};
+
+/* ANALYZE – SỬA BÀI HS + ĐỘNG VIÊN */
+function analyze(said){
+ feedback.innerHTML="";
+ if(said.includes("goed")){
+  feedback.innerHTML+=`<span class="bad">goed</span><span class="good" onclick="speak('went')">🔊 went</span>`;
+ }
+ if(said.includes("no pass")){
+  feedback.innerHTML+=`<span class="bad">no pass</span><span class="good" onclick="speak('go past')">🔊 go past</span>`;
+ }
+ if(!feedback.innerHTML)feedback.innerText="✅ Excellent!";
+ clap.play();cheer.play();
+ showCert();
+}
+
+/* CERT */
+function showCert(){
+ certificate.style.display="block";
+ cName.innerText=studentName.value;
+ cClass.innerText="Class: "+studentClass.value;
+ cUnit.innerText=units[unitSel.value].title;
+ cStar.innerText="⭐ ⭐ ⭐ ⭐";
+ cDate.innerText="Date: "+new Date().toLocaleDateString();
+}
+</script>
+</body>
+</html>
